@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Top 250</title>
+  <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+  
+</head>
+<body>
+<h1>Top 250</h1>
+<ul class="ul"></ul>
+<script type="text/javascript">
+$(document).ready(function(){
+	$.ajax({
+		url:"http://api.douban.com/v2/movie/top250?start=0&count=250",
+		type:"GET",
+		dataType:"jsonp",
+		success:function(data){
+			$("h1").text(data.title);
+			for(let i=0;i<data.subjects.length;i++){
+				let title = data.subjects[i].title;
+				let rating = data.subjects[i].rating.average;
+				let genres = data.subjects[i].genres;
+				let img = data.subjects[i].images.small;
+				let casts = data.subjects[i].casts[0].name;
+				$(".ul").append(`<li>${title}<br />${rating}<br />${casts}<br />${genres}<br /><img src="${img}"></li>`);
+			}
+		}
+	});
+});	
+ 
+</script>
+</body>
+</html
