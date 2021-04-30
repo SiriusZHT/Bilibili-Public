@@ -12,9 +12,19 @@
 function mySqrt(a) {
     if(a == 0) return a;
     let l = 1, r = a, mid, sqrt;
+    // l <= r 左闭右闭 [l, r]
     while(l <= r) {
-        mid = l + (r - l) >> 1;
-        sqrt = a / mid;
+        // mid 从数组的0位开始 偶数位的数组就偏右
+        // [l, r] = [0: 0, 8: 9] => mid = 5
+        
+        // mid 偶数偏左 因为数组从1开始  
+        // [l, r] = [1, 8] => mid = 4
+        // [l, r] = [1, 8) => mid = 4
+        // [l, r] = [1, 4] => mid = 2
+        // [l, r] = [2, 4] => mid = 3
+        // [l, r] = [2, 3] => mid = 2
+        mid = parseInt(l + (r - l) / 2);
+        sqrt = parseInt(a / mid);
         if(sqrt == mid) {
             return mid;
         } else if(mid > sqrt){
@@ -25,3 +35,14 @@ function mySqrt(a) {
     }
     return r;
 }
+
+console.log(mySqrt(8))
+// 牛顿迭代法
+// 其公式为 xn+1= xn− f (xn)/ f′(xn)。给定 f (x) = x2− a = 0，这里的迭代公式为 xn+1= (xn+ a/xn)/2
+// function mySqrt(a){
+//     let x = a;
+//     while(x * x > a){
+//         x = (x + a / x) / 2;
+//     }
+//     return x;
+// }
