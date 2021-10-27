@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <style>
+            html,
+            body {
+                height: 500%;
+            }
+
+            #btn {
+                width: 80px;
+                height: 40px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <button id="btn">按钮</button>
+        <script type="text/javascript">
+            // 面试题：什么是函数节流？ 什么是函数防抖？
+            /*
+                函数节流：
+                    一个函数执行一次后，只有大于设定的执行周期后才会执行第二次。
+                    - 有个需要频繁触发函数，出于优化新能角度，在规定时间内，只让函数触发的第一次生效，后面的不生效
+                函数防抖：
+                    一个需要频繁触发的函数在我规定的某个事件内 只让最后一次生效
+            */
+            /**
+             * 节流函数
+             *  @param fn 要被节流的函数
+             *  @param delay 规定的时间
+             */
+            function throttle(fn, delay) {
+                var timer = 0;
+                return function () {
+                    var nowTime = Date.now();
+                    if (nowTime - timer > delay) {
+                        fn.call(this);
+                        timer = nowTime;
+                    }
+                }
+            }
+
+            function debounce(fn, delay) {
+                var timer = 0;
+                return function () {
+                    clearTimeout(timer);
+                    timer = setTimeout(() => {
+                        fn.apply(this);
+                    }, delay);
+                }
+            }
+            // function throttle(fn, delay) {
+            //     // 记录当前函数触发的事件
+            //     var lastTime = 0;
+            //     return function () {
+            //         // var nowTime=Date.now();
+            //         var nowTime = Date.now();
+            //         if (nowTime - lastTime > delay) {
+            //             // 修正this 指向问题
+            //             fn.call(this);
+            //             lastTime = nowTime;
+            //         }
+            //     }
+            // }
+            document.onscroll = throttle(() => console.log('触发了' + Date.now()), 2000);
+
+            // function debounce(fn, delay) {
+            //     var timer = null;
+            //     // 清除上一次的延迟武器
+            //     return function () {
+            //         // 清除上一个延时器
+            //         clearTimeout(timer);
+            //         // 重新设置新的延时器
+            //         timer = setTimeout(() => {
+            //             fn.apply(this);
+            //         }, delay)
+            //     }
+            // }
+            document.querySelector('#btn').onclick = debounce(() => console.log('点击事件触发了' + Date.now()), 500);
+        </script>
+    </body>
+</html>
